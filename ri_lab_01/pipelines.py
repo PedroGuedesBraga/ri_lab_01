@@ -13,6 +13,7 @@ import csv
 
 class RiLab01Pipeline(object):
     
+    #Deixa a data da noticia no formato requerido para salvar corretamente no CSV
     def process_item(self, item, spider):
         date_not_formatted = item['date'][0]
         print('Data:')

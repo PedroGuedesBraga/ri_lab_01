@@ -23,6 +23,7 @@ class DiarioDoCentroDoMundoSpider(scrapy.Spider):
                 data = json.load(json_file)
         self.start_urls = list(data.values())
 
+    #Pega link de noticias nas paginas descritas nos 'seeds'
     def parse(self, response):
         links = response.xpath('//a/@href').getall()
         for link in links:
@@ -55,13 +56,15 @@ class DiarioDoCentroDoMundoSpider(scrapy.Spider):
 
             with open('frontier/diariodocentrodomundo.json', 'r') as frontier:
                 frontier_data = json.load(frontier)
-            frontier_data[titulo_noticia] = response.url
+            frontier_data[titulo_noticia] = response.url  ##Adiciona link da noticia no frontier
             with open('frontier/diariodocentrodomundo.json', 'w') as frontier:
                 json.dump(frontier_data, frontier)
 
             for link in links:
                 if(self.permitsCrawl(link)): 
-                    yield scrapy.Request(link, self.parseNoticia)
+                    yield scrapy.Request(link, self.parseNoticia) ##Chama a funcao de forma recursiva para fazer o 
+                                                                  # extrair informacoes de outras noticias cujo
+                                                                  # os link estao na pagina da noticia atual
 
     # Funcao que verifica se uma url ja nao foi acessada anteriormente, verificando no frontier, etc...
     def permitsCrawl(self, url):
@@ -70,7 +73,7 @@ class DiarioDoCentroDoMundoSpider(scrapy.Spider):
         if(len(url_components) >= 4 and url_components[2] == 'www.diariodocentrodomundo.com.br' and (url_components[3] not in blacklist)):
             with open('frontier/diariodocentrodomundo.json', 'r') as f:
                 frontier_data = json.load(f)
-                if(len(frontier_data) < 280):  #Impoe um limit de urls para o crawling buscar - Optional 
+                if(len(frontier_data) < 230):  #Impoe um limit de urls para o crawling buscar - Optional 
                     for key, value in frontier_data.items():
                         if(value == url):
                             return False
