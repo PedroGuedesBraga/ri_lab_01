@@ -41,7 +41,8 @@ class DiarioDoCentroDoMundoSpider(scrapy.Spider):
             noticia_loader.add_xpath('title', '//h1/text()')
             noticia_loader.add_value('sub_title', 'Noticias não tem subtitle no Diario do Centro do Mundo')
             noticia_loader.add_xpath('author', '//div[@class="td-post-author-name"]/a/text()')
-            noticia_loader.add_xpath('date', '//time/text()')
+            date = response.xpath('//time/@datetime').get()
+            noticia_loader.add_value('date', date)
             noticia_loader.add_value('section', 'Not specified on page!')
             noticia_loader.add_xpath('text', '//div[@class="td-post-content td-pb-padding-side"]/p/text()')
             noticia_loader.add_value('url', response.url)
@@ -76,6 +77,11 @@ class DiarioDoCentroDoMundoSpider(scrapy.Spider):
                     
                     return False
         return False
+
+    
+
+
+
 
 #Run on command line:
 # scrapy crawl diario_do_centro_do_mundo -o output/results.csv	

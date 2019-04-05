@@ -14,4 +14,27 @@ import csv
 class RiLab01Pipeline(object):
     
     def process_item(self, item, spider):
+        date_not_formatted = item['date'][0]
+        print('Data:')
+        print(item['date'][0])
+        formattedDate = self.formatDate(date_not_formatted)
+        item['date'] = formattedDate
+        print('Item date formatted to dd-mm-yyyy hh/mi/ss')
         return item
+
+
+
+
+# Auxiliar:
+# Change date to the format needed
+    def formatToDD_MM_YY(self, date):
+        date_and_time = date.split('T')
+        year_month_day = date_and_time[0].split('-')
+        year_month_day.reverse()
+        return '-'.join(year_month_day)
+        
+
+    def formatDate(self, date):
+        hh_mm_ss = date.split('T')[1]
+        dd_mm_yy = self.formatToDD_MM_YY(date)
+        return " ".join([dd_mm_yy, hh_mm_ss])
