@@ -9,6 +9,9 @@ from scrapy.conf import settings
 from ri_lab_01.items import RiLab01Item
 from ri_lab_01.items import RiLab01CommentItem
 
+import csv
+
 class RiLab01Pipeline(object):
+    
     def process_item(self, item, spider):
         return item
