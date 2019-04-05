@@ -8,6 +8,9 @@ from ri_lab_01.items import RiLab01Item
 from ri_lab_01.items import RiLab01CommentItem
 
 
+#Run on command line:
+# scrapy crawl diario_do_centro_do_mundo -o output/results.csv	
+
 class DiarioDoCentroDoMundoSpider(scrapy.Spider):
     name = 'diario_do_centro_do_mundo'
     allowed_domains = ['diariodocentrodomundo.com.br']
@@ -67,7 +70,7 @@ class DiarioDoCentroDoMundoSpider(scrapy.Spider):
         if(len(url_components) >= 4 and url_components[2] == 'www.diariodocentrodomundo.com.br' and (url_components[3] not in blacklist)):
             with open('frontier/diariodocentrodomundo.json', 'r') as f:
                 frontier_data = json.load(f)
-                if(len(frontier_data) < 250):  #Impoe um limit de urls para o crawling buscar - Optional 
+                if(len(frontier_data) < 280):  #Impoe um limit de urls para o crawling buscar - Optional 
                     for key, value in frontier_data.items():
                         if(value == url):
                             return False
@@ -77,11 +80,3 @@ class DiarioDoCentroDoMundoSpider(scrapy.Spider):
                     
                     return False
         return False
-
-    
-
-
-
-
-#Run on command line:
-# scrapy crawl diario_do_centro_do_mundo -o output/results.csv	
