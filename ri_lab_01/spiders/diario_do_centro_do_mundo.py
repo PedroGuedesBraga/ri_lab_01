@@ -66,13 +66,16 @@ class DiarioDoCentroDoMundoSpider(scrapy.Spider):
         if(len(url_components) >= 4 and url_components[2] == 'www.diariodocentrodomundo.com.br' and (url_components[3] not in blacklist)):
             with open('frontier/diariodocentrodomundo.json', 'r') as f:
                 frontier_data = json.load(f)
-                if(len(frontier_data) < 125):  #Impoe um limit de urls para o crawling buscar - Optional 
+                if(len(frontier_data) < 250):  #Impoe um limit de urls para o crawling buscar - Optional 
                     for key, value in frontier_data.items():
                         if(value == url):
                             return False
                     return True
                 else:
-                    print("Limite de noticias atingido: %d", len(frontier_data))
+                    print("Limite de noticias atingido: %d" % (len(frontier_data)))
                     
                     return False
         return False
+
+#Run on command line:
+# scrapy crawl diario_do_centro_do_mundo -o output/results.csv	
